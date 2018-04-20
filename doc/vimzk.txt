@@ -1,0 +1,27 @@
+*vimzk.txt* A short multi line description of your plugin
+
+===============================================================================
+CONTENTS                                                                *vimzk*
+
+    1. Intro .................................................... |vimzk-intro|
+    2. Requirements ...................................... |vimzk-requirements|
+    3. Usage .................................................... |vimzk-usage|
+    4. Licence ................................................ |vimzk-licence|
+===============================================================================
+1. Intro                                                          *vimzk-intro*
+
+Overview of plugin
+
+2. Requirements                                            *vimzk-requirements*
+
+What additional programs are required to run the plugin
+
+3. Usage                                                          *vimzk-usage*
+
+How to use the plugin. What functions does it give the user?
+
+4. Licence                                                      *vimzk-licence*
+
+This is open source make sure to include a licence
+
+vim:ft=help
