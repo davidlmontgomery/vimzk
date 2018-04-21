@@ -11,7 +11,7 @@ python sys.path.append(vim.eval('expand("<sfile>:h")'))
 function! TemplateExample()
 python << endOfPython
 
-from vimzk import vimzk_example
+from vimzk.vimzk import vimzk_example
 
 for n in range(5):
     print(vimzk_example())
