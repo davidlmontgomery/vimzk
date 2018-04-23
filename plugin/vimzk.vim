@@ -25,16 +25,16 @@ endif
 " echom string(g:vimzk_wiki)
 
 " --------------------------------
-" Add our plugin to the path
+" Add vimzk python code to PYTHONPATH
 " --------------------------------
 python import sys
 python import vim
 python sys.path.append(vim.eval('expand("<sfile>:h")'))
 
 " --------------------------------
-"  Function(s)
+"  Functions
 " --------------------------------
-function! CreateZid()
+function! VimzkCreateZid()
 python << endOfPython
 
 from vimzk.zid import create_zid
@@ -43,7 +43,27 @@ print(create_zid())
 endOfPython
 endfunction
 
+function! VimzkCreateZettel(...)
+  let filename = ''
+  for arg in a:000 
+    let filename = filename . '-' . arg
+  endfor
+
+python << endOfPython
+from vimzk.zid import create_zid
+zid = create_zid()
+vim.command('let zid = "%s"' % zid)
+endOfPython
+ 
+  let path = vimwiki#vars#get_wikilocal('path', g:vimzk_wiki_index)
+  let ext = vimwiki#vars#get_wikilocal('ext', g:vimzk_wiki_index)
+  let filename = zid . filename . ext
+  call vimwiki#base#edit_file(':e', path . filename, '')
+endfunction 
+
 " --------------------------------
-"  Expose our commands to the user
+"  Expose commands to the user
 " --------------------------------
-command! Zid call CreateZid()
+command! VimzkZid call VimzkCreateZid()
+command! -nargs=+ VimzkZettel call VimzkCreateZettel(<f-args>)
+
