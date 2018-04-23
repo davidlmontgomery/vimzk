@@ -34,36 +34,55 @@ python sys.path.append(vim.eval('expand("<sfile>:h")'))
 " --------------------------------
 "  Functions
 " --------------------------------
-function! VimzkCreateZid()
-python << endOfPython
 
+" ZkZidCreate
+"
+" Print a new zid.
+function! ZkZidCreate()
+python << endOfPython
 from vimzk.zid import create_zid
 print(create_zid())
-
 endOfPython
 endfunction
 
-function! VimzkCreateZettel(...)
+" ZkNoteCreate
+"
+" Create a new zettel with template content.
+function! ZkNoteCreate(...)
+  " Construct filename and save title words.
+  let title_words = []
   let filename = ''
-  for arg in a:000 
+  for arg in a:000
+    call add(title_words, arg)
     let filename = filename . '-' . arg
   endfor
+  let filename = tolower(filename)
 
+  " Get a new random zid
 python << endOfPython
 from vimzk.zid import create_zid
 zid = create_zid()
 vim.command('let zid = "%s"' % zid)
 endOfPython
- 
+
+  " Use vimwiki to create the buffer
   let path = vimwiki#vars#get_wikilocal('path', g:vimzk_wiki_index)
   let ext = vimwiki#vars#get_wikilocal('ext', g:vimzk_wiki_index)
   let filename = zid . filename . ext
   call vimwiki#base#edit_file(':e', path . filename, '')
-endfunction 
+
+  " Enter new zettel template content
+python << endOfPython
+from vimzk.zettel import insert_zettel_template
+zid = vim.eval('zid')
+title_words = vim.eval('title_words')
+insert_zettel_template(zid, title_words)
+endOfPython
+endfunction
 
 " --------------------------------
 "  Expose commands to the user
 " --------------------------------
-command! VimzkZid call VimzkCreateZid()
-command! -nargs=+ VimzkZettel call VimzkCreateZettel(<f-args>)
+command! ZkZidCreate call ZkZidCreate()
+command! -nargs=* ZkNoteCreate call ZkNoteCreate(<f-args>)
 

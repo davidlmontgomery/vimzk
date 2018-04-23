@@ -1,5 +1,5 @@
 """
-Routines for working with zettle ids (zids).
+Routines for working with zettel ids (zids).
 
 """
 from datetime import date
