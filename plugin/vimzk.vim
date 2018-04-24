@@ -49,13 +49,8 @@ endfunction
 "
 " Create a new zettel with template content.
 function! ZkNoteCreate(...)
-  " Construct filename and save title words.
-  let title_words = []
-  let filename = ''
-  for arg in a:000
-    call add(title_words, arg)
-    let filename = filename . '-' . arg
-  endfor
+  " Construct filename 
+  let filename = join(a:000, '-')
   let filename = tolower(filename)
 
   " Get a new random zid
@@ -68,14 +63,14 @@ endOfPython
   " Use vimwiki to create the buffer
   let path = vimwiki#vars#get_wikilocal('path', g:vimzk_wiki_index)
   let ext = vimwiki#vars#get_wikilocal('ext', g:vimzk_wiki_index)
-  let filename = zid . filename . ext
+  let filename = filename . '.' . zid . ext
   call vimwiki#base#edit_file(':e', path . filename, '')
 
   " Enter new zettel template content
 python << endOfPython
 from vimzk.zettel import insert_zettel_template
 zid = vim.eval('zid')
-title_words = vim.eval('title_words')
+title_words = vim.eval('a:000')
 insert_zettel_template(zid, title_words)
 endOfPython
 endfunction
@@ -84,5 +79,5 @@ endfunction
 "  Expose commands to the user
 " --------------------------------
 command! ZkZidCreate call ZkZidCreate()
-command! -nargs=* ZkNoteCreate call ZkNoteCreate(<f-args>)
+command! -nargs=+ ZkNoteCreate call ZkNoteCreate(<f-args>)
 

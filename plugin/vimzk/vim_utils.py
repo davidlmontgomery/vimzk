@@ -14,9 +14,8 @@ def buffer_is_empty(idx=-1):
 
     """
     buf = vim.current.buffer if idx == -1 else vim.buffers[idx]
-    is_empty = True
-    for line in buf:
-        if line != '':
-            is_empty = False
-            break
-    return is_empty
+    if len(buf) > 1:
+        return False
+    if len(buf) == 1 and buf[0] != '':
+        return False
+    return True

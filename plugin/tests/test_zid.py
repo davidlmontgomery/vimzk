@@ -9,13 +9,10 @@ from datetime import date
 import mock
 
 from vimzk.zid import create_zid, ZID_LENGTH, ZK_START_DATE
-#from vimzk.context import vim
-#print vim
 
 
 class ZidTests(unittest.TestCase):
     """Test zid generation."""
-
 
     @staticmethod
     def _check_zid(zid):

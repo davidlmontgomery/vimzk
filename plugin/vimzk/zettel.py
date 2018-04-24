@@ -33,9 +33,5 @@ def insert_zettel_template(zid, title_words, zktype='n'):
     buf.append('')
     buf.append('')
 
-    # testing buffer_is_empty
-    #buf.append('EMPTY' if buffer_is_empty() else 'NOT EMPTY')
-
-    # position cursor and start insert mode
+    # position cursor
     vim.current.window.cursor = (4, 1)
-    #vim.command(':startinsert')
