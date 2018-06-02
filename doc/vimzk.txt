@@ -20,6 +20,22 @@ What additional programs are required to run the plugin
 
 How to use the plugin. What functions does it give the user?
 
+*Relative-path external file linking*. VimZk supports relative-path links to 
+files in a user-specified base directory that is external to the zettelkasten 
+directory.
+
+  * In your vimrc file, set g:vimzk_ext_base to the '/'-terminated absolute 
+    path to the directory where you will store your external files.
+  * Use the 'zkref:' scheme to specify links to these files. 
+  * Use paths relative to g:vimzk_ext_base for zkref: links.
+  * To enable link following, add the following function to your vimrc file:
+    function! VimwikiLinkHandler(link)
+      return ZkExternalLinkHandler(a:link)
+    endfunction
+  * To enable omni completion for filenames in zkext: links, add the line
+      set omnifunc=ZkComplete
+    in ~/.vim/after/ftplugin/vimwiki.vim.
+
 4. Licence                                                      *vimzk-licence*
 
 This is open source make sure to include a licence
