@@ -78,7 +78,7 @@ endfunction
 
 " ZkComplete
 "
-" Extend vimwiki omni completion with zkext: filename completion for files under 
+" Extend vimwiki omni completion with zkext: filename completion for files under
 " external base path (g:vimzk_ext_base).
 "
 " To enable this functionality, add the line
@@ -99,10 +99,10 @@ function! ZkComplete(findstart, base)
 
 " Obtain 'zkext:' link completions
 python << endOfPython
-from vimzk.fs_utils import zkext_completions 
+from vimzk.fs_utils import zkext_completions
 external_files_base = vim.eval('g:vimzk_ext_base')
 completion_base = vim.eval('a:base')
-link_completions = zkext_completions(external_files_base, completion_base) 
+link_completions = zkext_completions(external_files_base, completion_base)
 
 # Problems were encountered with filenames that had non-ASCII characters
 # when the python list was directly assigned to a vimscript variable.
