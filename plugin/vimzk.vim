@@ -48,7 +48,7 @@ endfunction
 " ZkNoteCreate
 "
 " Create a new zettel with template content.
-function! ZkNoteCreate(...)
+function! ZkNoteCreate(subdirectory, ...)
   " Construct filename
   let filename = join(a:000, '-')
   let filename = tolower(filename)
@@ -61,7 +61,7 @@ vim.command('let zid = "%s"' % zid)
 endOfPython
 
   " Use vimwiki to create the buffer
-  let path = vimwiki#vars#get_wikilocal('path', g:vimzk_wiki_index)
+  let path = vimwiki#vars#get_wikilocal('path', g:vimzk_wiki_index) . a:subdirectory
   let ext = vimwiki#vars#get_wikilocal('ext', g:vimzk_wiki_index)
   let filename = filename . '.' . zid . ext
   call vimwiki#base#edit_file(':e', path . filename, '')
@@ -148,5 +148,6 @@ endfunction
 "  Expose commands to the user
 " --------------------------------
 command! ZkZidCreate call ZkZidCreate()
-command! -nargs=+ ZkNoteCreate call ZkNoteCreate(<f-args>)
+command! -nargs=+ ZkNoteCreate call ZkNoteCreate('', <f-args>)
+command! -nargs=+ ZkSlipBoxCreate call ZkNoteCreate('slipbox/', <f-args>)
 
