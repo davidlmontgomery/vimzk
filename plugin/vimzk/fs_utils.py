@@ -3,6 +3,7 @@ File system utilities.
 
 """
 import glob
+import os
 
 
 ZKEXT_SCHEME = 'zkext:'
@@ -22,3 +23,12 @@ def zkext_completions(external_files_base, completion_base):
         pc = pc.replace("'", "''")                 # Double single-quotes to escape for vim
         path_completions[ii] = ZKEXT_SCHEME + pc
     return path_completions
+
+
+def subdirectory_basenames(parent_directory):
+    """
+    Return list of immediate subdirectories of provided parent_directory.
+
+    """
+    return [os.path.basename(sd.rstrip('/')) for sd in glob.glob(parent_directory + '*/')]
+

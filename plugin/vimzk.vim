@@ -45,10 +45,58 @@ print(create_zid())
 endOfPython
 endfunction
 
+
+" ZkGetSubdirectories
+"
+" Return a list of the zk's subdirectories. (Non-recursive, basenames only.)
+function! ZkGetSubdirectories()
+  let zkpath = vimwiki#vars#get_wikilocal('path', g:vimzk_wiki_index)
+python << endOfPython
+from vimzk.fs_utils import subdirectory_basenames
+subdirs = subdirectory_basenames(vim.eval('zkpath'))
+vim.command('let sds = pyeval("subdirs")')
+endOfPython
+  return sds
+endfunction
+
+
+" ZkGetSelectedSubdirectory
+"
+" Return subdirectory basename selected by user (or empty string for root).
+function! ZkGetSelectedSubdirectory()
+  let selection = -1
+  while selection == -1
+    let subdirs = ZkGetSubdirectories()
+    let sep = '   '
+    let idx = 0
+    echo idx . sep . '(zk root)'
+    while idx < len(subdirs)
+      echo (idx + 1) . sep . subdirs[idx]
+      let idx += 1
+    endwhile
+    let idx = input("Select directory (specify number): ")
+    if idx == ''
+      let selection = 0
+    elseif idx =~# '^\d\+$'
+      if idx < 0 || idx > len(subdirs)
+        let selection = -1
+      else
+        let selection = idx
+      endif
+    endif
+  endwhile
+  let directory = ''
+  if selection > 0
+    let directory = subdirs[selection-1] . '/'
+  endif
+  return directory
+endfunction
+
+
 " ZkNoteCreate
 "
 " Create a new zettel with template content.
-function! ZkNoteCreate(subdirectory, ...)
+function! ZkNoteCreate(...)
   " Construct filename
   let filename = join(a:000, '-')
   let filename = tolower(filename)
@@ -61,7 +109,8 @@ vim.command('let zid = "%s"' % zid)
 endOfPython
 
   " Use vimwiki to create the buffer
-  let path = vimwiki#vars#get_wikilocal('path', g:vimzk_wiki_index) . a:subdirectory
+  let subdirectory = ZkGetSelectedSubdirectory()
+  let path = vimwiki#vars#get_wikilocal('path', g:vimzk_wiki_index) . subdirectory
   let ext = vimwiki#vars#get_wikilocal('ext', g:vimzk_wiki_index)
   let filename = filename . '.' . zid . ext
   call vimwiki#base#edit_file(':e', path . filename, '')
@@ -148,6 +197,5 @@ endfunction
 "  Expose commands to the user
 " --------------------------------
 command! ZkZidCreate call ZkZidCreate()
-command! -nargs=+ ZkNoteCreate call ZkNoteCreate('', <f-args>)
-command! -nargs=+ ZkSlipBoxCreate call ZkNoteCreate('slipbox/', <f-args>)
+command! -nargs=+ ZkNoteCreate call ZkNoteCreate(<f-args>)
 
