@@ -6,8 +6,6 @@ import unittest
 
 from datetime import date
 
-import mock
-
 from vimzk.zid import create_zid, ZID_LENGTH, ZK_START_DATE
 
 
@@ -20,7 +18,7 @@ class ZidTests(unittest.TestCase):
         assert len(zid) == ZID_LENGTH
         assert all(cc.isdigit() or cc.islower() for cc in zid)
 
-    @mock.patch('vimzk.string_utils.random')
+    @unittest.mock.patch('vimzk.string_utils.random')
     def test_random_prefix(self, mock_zid_random):
         """Test we're calling random for prefix."""
         # Have random.choice return determined values

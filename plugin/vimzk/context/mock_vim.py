@@ -2,9 +2,9 @@
 Provides MockVim for testing code that Vim's builtin module/singleton 'vim'.
 
 """
-import mock
+from unittest.mock import MagicMock
 
 
-class MockVim(mock.MagicMock):
+class MockVim(MagicMock):
     """Mock of vim for testing."""
     pass

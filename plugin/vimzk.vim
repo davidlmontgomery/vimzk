@@ -27,9 +27,9 @@ endif
 " --------------------------------
 " Add vimzk python code to PYTHONPATH
 " --------------------------------
-python import sys
-python import vim
-python sys.path.append(vim.eval('expand("<sfile>:h")'))
+python3 import sys
+python3 import vim
+python3 sys.path.append(vim.eval('expand("<sfile>:h")'))
 
 " --------------------------------
 "  Functions
@@ -39,7 +39,7 @@ python sys.path.append(vim.eval('expand("<sfile>:h")'))
 "
 " Print a new zid.
 function! ZkZidCreate()
-python << endOfPython
+python3 << endOfPython
 from vimzk.zid import create_zid
 print(create_zid())
 endOfPython
@@ -51,10 +51,10 @@ endfunction
 " Return a list of the zk's subdirectories. (Non-recursive, basenames only.)
 function! ZkGetSubdirectories()
   let zkpath = vimwiki#vars#get_wikilocal('path', g:vimzk_wiki_index)
-python << endOfPython
+python3 << endOfPython
 from vimzk.fs_utils import subdirectory_basenames
 subdirs = subdirectory_basenames(vim.eval('zkpath'))
-vim.command('let sds = pyeval("subdirs")')
+vim.command('let sds = py3eval("subdirs")')
 endOfPython
   return sds
 endfunction
@@ -102,7 +102,7 @@ function! ZkNoteCreate(...)
   let filename = tolower(filename)
 
   " Get a new random zid
-python << endOfPython
+python3 << endOfPython
 from vimzk.zid import create_zid
 zid = create_zid()
 vim.command('let zid = "%s"' % zid)
@@ -116,7 +116,7 @@ endOfPython
   call vimwiki#base#edit_file(':e', path . filename, '')
 
   " Enter new zettel template content
-python << endOfPython
+python3 << endOfPython
 from vimzk.zettel import insert_zettel_template
 zid = vim.eval('zid')
 title_words = vim.eval('a:000')
@@ -147,7 +147,7 @@ function! ZkComplete(findstart, base)
     endif
 
 " Obtain 'zkext:' link completions
-python << endOfPython
+python3 << endOfPython
 from vimzk.fs_utils import zkext_completions
 external_files_base = vim.eval('g:vimzk_ext_base')
 completion_base = vim.eval('a:base')
