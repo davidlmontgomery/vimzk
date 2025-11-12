@@ -1,1 +1,4 @@
+.venv
 doc/tags
+__pycache__
+vimzk.wpr
