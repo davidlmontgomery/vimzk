@@ -3,13 +3,13 @@ File system utilities.
 
 """
 import glob
-import os
+
+from pathlib import Path
 
 
 ZKEXT_SCHEME = 'zkext:'
 
 
-# FIXME Add tests for zkext_completions
 def zkext_completions(external_files_base, completion_base):
     """
     Return list of 'zkext:' link completions for provided completion_base.
@@ -30,5 +30,6 @@ def subdirectory_basenames(parent_directory):
     Return list of immediate subdirectories of provided parent_directory.
 
     """
-    return [os.path.basename(sd.rstrip('/')) for sd in glob.glob(parent_directory + '*/')]
+    parent = Path(parent_directory)
+    return [subdir.name for subdir in parent.iterdir() if subdir.is_dir()]
 

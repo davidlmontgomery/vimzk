@@ -50,7 +50,8 @@ endfunction
 "
 " Return a list of the zk's subdirectories. (Non-recursive, basenames only.)
 function! ZkGetSubdirectories()
-  let zkpath = vimwiki#vars#get_wikilocal('path', g:vimzk_wiki_index)
+  let pre_zkpath = vimwiki#vars#get_wikilocal('path', g:vimzk_wiki_index)
+  let zkpath = vimwiki#path#path_norm(pre_zkpath)
 python3 << endOfPython
 from vimzk.fs_utils import subdirectory_basenames
 subdirs = subdirectory_basenames(vim.eval('zkpath'))
